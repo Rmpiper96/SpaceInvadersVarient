@@ -4,7 +4,7 @@ from fleet import Fleet
 
 #Game settings
 WINDOW_WIDTH = 1000
-WINDOW_HEIGHT = 700
+WINDOW_HEIGHT = 600
 GAME_SIDE_MARGIN = 20
 GAME_TOP_MARGIN = 20
 GAME_BOTTOM_MARGIN = 20
@@ -19,6 +19,7 @@ GAME_LEFT_WALL = GAME_SIDE_MARGIN + GAME_BORDER_WIDTH
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
+BLUE = (81, 46, 255)
 
 
 pygame.init()
@@ -101,7 +102,7 @@ def game_intro():
                 pygame.quit()
                 quit()
     
-
+score = 0
 #Main Game Loop
 
 while hero.is_alive:
@@ -118,6 +119,11 @@ while hero.is_alive:
                 explosion_sound.play()
                 bullet.is_alive = False
                 ship.is_alive = False
+
+                score += 10
+
+    score_text = score_font.render(str(score), False, BLACK)
+    game_display.blit(score_text, (0,0))
 
     fleet.remove_dead_ships()
 
