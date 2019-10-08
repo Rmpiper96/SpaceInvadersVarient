@@ -2,7 +2,7 @@ from enemy import Enemy
 
 class Fleet():
     def __init__(self, row_count, column_count, initial_speed, enemy_img, starting_xcor, starting_ycor):
-        self.direction = 1
+        self.direction = 0.5
         self.speed = initial_speed
         self.ships = self.get_initial_ships(row_count, column_count, enemy_img, starting_xcor, starting_ycor)
 

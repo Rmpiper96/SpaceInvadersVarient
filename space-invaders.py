@@ -119,9 +119,10 @@ while hero.is_alive:
                 explosion_sound.play()
                 bullet.is_alive = False
                 ship.is_alive = False
-
+   
                 score += 10
-
+    for enemybullet in enemy.enemybullets_fired
+        for 
     score_text = score_font.render(str(score), False, BLACK)
     game_display.blit(score_text, (0,0))
 
