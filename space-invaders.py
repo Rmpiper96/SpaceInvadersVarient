@@ -2,6 +2,7 @@ import pygame
 from hero import Hero
 from fleet import Fleet
 
+
 #Game settings
 WINDOW_WIDTH = 1000
 WINDOW_HEIGHT = 600
@@ -60,19 +61,20 @@ def handle_events():
             if event.type == pygame.QUIT:
                 hero.is_alive = False
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
+                if event.key == pygame.K_a:
                     hero.set_direction_left()
-                elif event.key == pygame.K_RIGHT:
+                elif event.key == pygame.K_d:
                     hero.set_direction_right()
                 elif event.key == pygame.K_SPACE:
                     laser_sound.play()
                     hero.shoot(bullet_image)
                 elif event.key == pygame.K_p:
                     pause_game()
+                
             elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_LEFT:
+                if event.key == pygame.K_a:
                     hero.set_direction_none()
-                elif event.key == pygame.K_RIGHT:
+                elif event.key == pygame.K_d:
                     hero.set_direction_none()
 
 def pause_game():
@@ -121,20 +123,27 @@ while hero.is_alive:
                 ship.is_alive = False
    
                 score += 10
-    for enemybullet in enemy.enemybullets_fired
-        for 
+    
     score_text = score_font.render(str(score), False, BLACK)
-    game_display.blit(score_text, (0,0))
+    game_display.blit(score_text, (0,0) )
 
+    for enemybullet in fleet.enemybullets_fired:
+        for hero in Hero:
+           if bullet.has_collided_with(hero):
+                bullet.is_alive = False
+                hero.is_alive = False
+                
     fleet.remove_dead_ships()
 
     hero.move(GAME_LEFT_WALL, GAME_RIGHT_WALL)
     fleet.move_over()
     hero.move_all_bullets()
+    fleet.move_all_enemybullets()
 
     hero.show(game_display)
     fleet.show(game_display)
     hero.show_all_bullets(game_display)
+    fleet.show_all_enemybullets(game_display)
 
     pygame.display.update()
 

@@ -5,6 +5,7 @@ class Fleet():
         self.direction = 0.5
         self.speed = initial_speed
         self.ships = self.get_initial_ships(row_count, column_count, enemy_img, starting_xcor, starting_ycor)
+        self.enemybullets_fired = []
 
     def get_initial_ships(self, row_count, column_count, enemy_img, starting_xcor, starting_ycor):
         initial_ships = []
@@ -14,6 +15,30 @@ class Fleet():
                 current_ycor = starting_ycor + row * enemy_img.get_height()
                 initial_ships.append(Enemy(enemy_img, current_xcor, current_ycor))
         return initial_ships
+
+    def enemyshoot(self, bullet_image):
+        new_enemybullet = EnemyBullet(bullet_image, self.xcor + self.width / 2 - bullet_image.get_width() / 2, self.ycor)
+        self.enemybullets_fired.append(new_enemybullet)
+
+    def handle_wall_collision_for_enemybullets(self, bottom_wall):
+        for bullet in self.enemybullets_fired:
+            if enemybullet.has_collided_with_bottom_wall(bottom_wall):
+                enemybullet.is_alive = False
+
+        self.remove_dead_enemybullets()
+
+    def remove_dead_enemybullets(self):
+        for i in range(len(self.enemybullets_fired) -1, -1, -1):
+            if self.enemybullets_fired[i].is_alive == False:
+                self.enemybullets_fired.pop(i)
+
+    def move_all_enemybullets(self):
+        for enemybullet in self.enemybullets_fired:
+            enemybullet.move()
+
+    def show_all_enemybullets(self, game_display):
+        for enemybullet in self.enemybullets_fired:
+            enemybullet.show(game_display)
 
     def show(self, game_display):
         for ship in self.ships:
