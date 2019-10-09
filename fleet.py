@@ -1,5 +1,5 @@
 from enemy import Enemy
-
+from enemybullet import EnemyBullet
 class Fleet():
     def __init__(self, row_count, column_count, initial_speed, enemy_img, starting_xcor, starting_ycor):
         self.direction = 0.5

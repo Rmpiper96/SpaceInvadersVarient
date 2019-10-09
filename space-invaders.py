@@ -68,6 +68,9 @@ def handle_events():
                 elif event.key == pygame.K_SPACE:
                     laser_sound.play()
                     hero.shoot(bullet_image)
+                elif event.key == pygame.K_q:
+                    laser_sound.play()
+                    fleet.enemyshoot(bullet_image)
                 elif event.key == pygame.K_p:
                     pause_game()
                 
