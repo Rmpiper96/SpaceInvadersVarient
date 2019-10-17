@@ -28,6 +28,7 @@ pygame.init()
 stage_background = pygame.image.load('media/Background.png')
 player_image = pygame.image.load('media/si-player.png')
 bullet_image = pygame.image.load('media/si-bullet.png')
+enemybullet_image = pygame.image.load('media/enemybullet.png')
 enemy_image = pygame.image.load('media/si-enemy.png')
 laser_sound = pygame.mixer.Sound('media/si-laser.wav')
 explosion_sound = pygame.mixer.Sound('media/si-explode.wav')
@@ -70,7 +71,7 @@ def handle_events():
                     hero.shoot(bullet_image)
                 elif event.key == pygame.K_q:
                     laser_sound.play()
-                    fleet.enemyshoot(bullet_image)
+                    fleet.enemyshoot(enemybullet_image)
                 elif event.key == pygame.K_p:
                     pause_game()
                 
@@ -131,10 +132,9 @@ while hero.is_alive:
     game_display.blit(score_text, (0,0) )
 
     for enemybullet in fleet.enemybullets_fired:
-        for hero in Hero:
-           if bullet.has_collided_with(hero):
-                bullet.is_alive = False
-                hero.is_alive = False
+        if enemybullet.has_collided_with(hero):
+            hero.is_alive = False
+        
                 
     fleet.remove_dead_ships()
 

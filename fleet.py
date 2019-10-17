@@ -6,6 +6,9 @@ class Fleet():
         self.speed = initial_speed
         self.ships = self.get_initial_ships(row_count, column_count, enemy_img, starting_xcor, starting_ycor)
         self.enemybullets_fired = []
+        self.width = enemy_img.get_width()
+        self.height = enemy_img.get_height()
+        
 
     def get_initial_ships(self, row_count, column_count, enemy_img, starting_xcor, starting_ycor):
         initial_ships = []
@@ -14,10 +17,12 @@ class Fleet():
                 current_xcor = starting_xcor + col * enemy_img.get_width()
                 current_ycor = starting_ycor + row * enemy_img.get_height()
                 initial_ships.append(Enemy(enemy_img, current_xcor, current_ycor))
+                self.xcor = current_xcor
+                self.ycor = current_ycor
         return initial_ships
 
-    def enemyshoot(self, bullet_image):
-        new_enemybullet = EnemyBullet(bullet_image, self.xcor + self.width / 2 - bullet_image.get_width() / 2, self.ycor)
+    def enemyshoot(self, enemybullet_image):
+        new_enemybullet = EnemyBullet(enemybullet_image, self.xcor + self.width / 10 - enemybullet_image.get_width() / 20, self.ycor)
         self.enemybullets_fired.append(new_enemybullet)
 
     def handle_wall_collision_for_enemybullets(self, bottom_wall):
