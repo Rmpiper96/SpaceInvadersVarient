@@ -1,7 +1,9 @@
-from enemy import Enemy
+import pygame
+from boss import Boss
+from limbs import Limbs
 from enemybullet import EnemyBullet
-class Fleet():
-    def __init__(self, row_count, column_count, initial_speed, enemy_img, starting_xcor, starting_ycor):
+class BossFleet():
+    def __init__(self, boss_img, limb_img, starting_xcor, starting_ycor):
         self.direction = 0.5
         self.speed = initial_speed
         self.ships = self.get_initial_ships(row_count, column_count, enemy_img, starting_xcor, starting_ycor)
@@ -10,16 +12,9 @@ class Fleet():
         self.height = enemy_img.get_height()
         
 
-    def get_initial_ships(self, row_count, column_count, enemy_img, starting_xcor, starting_ycor):
-        initial_ships = []
-        for row in range(4):
-            for col in range(10):
-                current_xcor = starting_xcor + col * enemy_img.get_width()
-                current_ycor = starting_ycor + row * enemy_img.get_height()
-                initial_ships.append(Enemy(enemy_img, current_xcor, current_ycor))
-                self.xcor = current_xcor
-                self.ycor = current_ycor
-        return initial_ships
+    def get_initial_boss_limb_formation(self, row_count, column_count, limb_img, starting_xcor, starting_ycor):
+        initial_formatation = []
+        
 
     def enemyshoot(self, enemybullet_image):
         new_enemybullet = EnemyBullet(enemybullet_image, self.xcor + self.width / 10 - enemybullet_image.get_width() / 20, self.ycor)
@@ -46,28 +41,25 @@ class Fleet():
             enemybullet.show(game_display)
 
     def show(self, game_display):
-        for ship in self.ships:
+        for ship in self.bossform:
             ship.show(game_display)
 
     def handle_wall_collision(self, left_wall, right_wall):
-        for ship in self.ships:
+        for ship in self.bossform:
             if ship.has_collided_with_left_wall(left_wall) or ship.has_collided_with_right_wall(right_wall):
                 self.move_down()
                 self.change_direction()
                 break
 
-    def move_down(self):
-        for ship in self.ships:
-            ship.move_down(20)
-
     def change_direction(self):
         self.direction *= -1
 
     def move_over(self):
-        for ship in self.ships:
+        for ship in self.bossform:
             ship.move_over(self.direction * self.speed)
 
     def remove_dead_ships(self):
-        for i in range(len(self.ships) -1, -1, -1):
-            if self.ships[i].is_alive == False:
-                self.ships.pop(i)
+        for i in range(len(self.bossform) -1, -1, -1):
+            if self.bossform[i].is_alive == False:
+                self.bossform.pop(i)
+    

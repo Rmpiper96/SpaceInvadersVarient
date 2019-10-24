@@ -1,6 +1,10 @@
 import pygame
+from bossfleet import BossFleet
 from hero import Hero
 from fleet import Fleet
+import sys
+import pygame as pg
+
 
 
 #Game settings
@@ -27,9 +31,13 @@ pygame.init()
 #Media Files
 stage_background = pygame.image.load('media/Background.png')
 player_image = pygame.image.load('media/si-player.png')
-bullet_image = pygame.image.load('media/si-bullet.png')
+bullet_image_large = pygame.image.load('media/si-bullet.png')
+boss_image = pygame.image.load('media/boss_edited.png')
+limb_image = pygame.image.load('media/limb_edited.png')
+bullet_image = pg.transform.rotozoom(bullet_image_large, 0, 0.7)
 enemybullet_image = pygame.image.load('media/enemybullet.png')
-enemy_image = pygame.image.load('media/si-enemy.png')
+enemy_image_large = pygame.image.load('media/si-enemy.png')
+enemy_image = pg.transform.rotozoom(enemy_image_large, 0, 0.7)
 laser_sound = pygame.mixer.Sound('media/si-laser.wav')
 explosion_sound = pygame.mixer.Sound('media/si-explode.wav')
 pygame.mixer.music.load('media/Undertale Asgore Theme.wav')
@@ -134,7 +142,9 @@ while hero.is_alive:
     for enemybullet in fleet.enemybullets_fired:
         if enemybullet.has_collided_with(hero):
             hero.is_alive = False
-        
+    
+    
+
                 
     fleet.remove_dead_ships()
 
@@ -143,11 +153,15 @@ while hero.is_alive:
     hero.move_all_bullets()
     fleet.move_all_enemybullets()
 
+
     hero.show(game_display)
     fleet.show(game_display)
     hero.show_all_bullets(game_display)
     fleet.show_all_enemybullets(game_display)
-
+    if score >= 400:
+        boss_list.show(game_display)
+        limbs_list.show(game_diplsay)
+        boss.show(game_display)
     pygame.display.update()
 
     clock.tick(100)
