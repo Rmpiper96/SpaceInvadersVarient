@@ -1,23 +1,24 @@
 import pygame
-from boss import Boss
+from limbs import Limbs
 from enemybullet import EnemyBullet
-class BossFleet():
-    def __init__(self, boss_img, starting_xcor, starting_ycor):
+
+class LimbFleet():
+    def __init__(self, limb_img, starting_xcor, starting_ycor):
         self.direction = 0.5
-        self.ships = self.get_initial_boss_limb_formation(boss_img, starting_xcor, starting_ycor)
+        self.ships = self.get_initial_boss_limb_formation(limb_img, starting_xcor, starting_ycor)
         self.enemybullets_fired = []
-        self.width = boss_img.get_width()
-        self.height = boss_img.get_height()
+        self.width = limb_img.get_width()
+        self.height = limb_img.get_height()
         self.health = 100
         
 
-    def get_initial_boss_limb_formation(self, boss_img, starting_xcor, starting_ycor):
+    def get_initial_boss_limb_formation(self, limb_img, starting_xcor, starting_ycor):
         initial_formation = []
         for row in range(1):
             for col in range(1):
-                current_xcor = starting_xcor + col * boss_img.get_width()
-                current_ycor = starting_ycor + row * boss_img.get_height()
-                initial_formation.append(Boss(boss_img, current_xcor, current_ycor))
+                current_xcor = starting_xcor + col * limb_img.get_width()
+                current_ycor = starting_ycor + row * limb_img.get_height()
+                initial_formation.append(Limbs(limb_img, current_xcor, current_ycor))
                 self.xcor = current_xcor
                 self.ycor = current_ycor
         return initial_formation
