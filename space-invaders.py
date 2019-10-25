@@ -1,5 +1,8 @@
 import pygame
-from limbfleet import LimbFleet
+from limbfleet1 import LimbFleet
+from limbfleet2 import LimbFleet
+from limbfleet3 import LimbFleet
+from limbfleet4 import LimbFleet
 from bossfleet import BossFleet
 from hero import Hero
 from fleet import Fleet
@@ -138,7 +141,7 @@ def game_intro():
                 pygame.quit()
                 quit()
 
-limbfleet = LimbFleet(limb_image, 220, 100)
+limbfleet1 = LimbFleet(limb_image, 220, 100)
 def game_intro():
     intro = True
     while intro:
@@ -150,7 +153,7 @@ def game_intro():
                 game_intro = False
                 pygame.quit()
                 quit()
-limbfleet = LimbFleet(limb_image, 330, 150)
+limbfleet2 = LimbFleet(limb_image, 330, 150)
 def game_intro():
     intro = True
     while intro:
@@ -162,7 +165,7 @@ def game_intro():
                 game_intro = False
                 pygame.quit()
                 quit()
-limbfleet = LimbFleet(limb_image, 650, 250)
+limbfleet3 = LimbFleet(limb_image, 650, 250)
 def game_intro():
     intro = True
     while intro:
@@ -174,7 +177,7 @@ def game_intro():
                 game_intro = False
                 pygame.quit()
                 quit()
-limbfleet = LimbFleet(limb_image, 650, 250)
+limbfleet4 = LimbFleet(limb_image, 850, 150)
 def game_intro():
     intro = True
     while intro:
@@ -209,7 +212,7 @@ while hero.is_alive:
 
     for bullet in hero.bullets_fired:
         for ship in bossfleet.ships:
-            if bullet.has_collided_with(ship) and score >= 400:
+            if bullet.has_collided_with(ship) and score >= 400 and limbfleet1.health <= 0 and limbfleet2.health <= 0 and limbfleet3.health <= 0 and limbfleet4.health <= 0:
                 explosion_sound.play()
                 bullet.is_alive = False
                 
@@ -219,14 +222,47 @@ while hero.is_alive:
                     ship.is_alive = False
 
     for bullet in hero.bullets_fired:
-        for ship in limbfleet.ships:
+        for ship in limbfleet1.ships:
             if bullet.has_collided_with(ship) and score >= 400:
                 explosion_sound.play()
                 bullet.is_alive = False
                 
                 score += 5
-                limbfleet.health -= 5
-                if limbfleet.health <= 0:
+                limbfleet1.health -= 5
+                if limbfleet1.health <= 0:
+                    ship.is_alive = False
+
+    for bullet in hero.bullets_fired:
+        for ship in limbfleet2.ships:
+            if bullet.has_collided_with(ship) and score >= 400:
+                explosion_sound.play()
+                bullet.is_alive = False
+                
+                score += 5
+                limbfleet2.health -= 5
+                if limbfleet2.health <= 0:
+                    ship.is_alive = False
+    
+    for bullet in hero.bullets_fired:
+        for ship in limbfleet3.ships:
+            if bullet.has_collided_with(ship) and score >= 400:
+                explosion_sound.play()
+                bullet.is_alive = False
+                
+                score += 5
+                limbfleet3.health -= 5
+                if limbfleet3.health <= 0:
+                    ship.is_alive = False
+
+    for bullet in hero.bullets_fired:
+        for ship in limbfleet4.ships:
+            if bullet.has_collided_with(ship) and score >= 400:
+                explosion_sound.play()
+                bullet.is_alive = False
+                
+                score += 5
+                limbfleet4.health -= 5
+                if limbfleet4.health <= 0:
                     ship.is_alive = False
                 
     
@@ -243,7 +279,10 @@ while hero.is_alive:
     fleet.remove_dead_ships()
 
     bossfleet.remove_dead_ships()
-    limbfleet.remove_dead_ships()
+    limbfleet1.remove_dead_ships()
+    limbfleet2.remove_dead_ships()
+    limbfleet3.remove_dead_ships()
+    limbfleet4.remove_dead_ships()
 
     hero.move(GAME_LEFT_WALL, GAME_RIGHT_WALL)
     fleet.move_over()
@@ -257,7 +296,10 @@ while hero.is_alive:
     fleet.show_all_enemybullets(game_display)
     if score >= 400:
         bossfleet.show(game_display)
-        limbfleet.show(game_display)
+        limbfleet1.show(game_display)
+        limbfleet2.show(game_display)
+        limbfleet3.show(game_display)
+        limbfleet4.show(game_display)
         
     pygame.display.update()
 
