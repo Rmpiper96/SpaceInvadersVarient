@@ -1,4 +1,6 @@
 import pygame
+import random
+from shooterfleet import ShooterFleet
 from limbfleet1 import LimbFleet
 from limbfleet2 import LimbFleet
 from limbfleet3 import LimbFleet
@@ -44,6 +46,8 @@ enemy_image_large = pygame.image.load('media/si-enemy.png')
 enemy_image = pg.transform.rotozoom(enemy_image_large, 0, 0.7)
 laser_sound = pygame.mixer.Sound('media/si-laser.wav')
 explosion_sound = pygame.mixer.Sound('media/si-explode.wav')
+monster_arrives = pygame.mixer.Sound('media/MonsterRoar.wav')
+monster_dies = pygame.mixer.Sound('media/MonsterDeath.wav')
 pygame.mixer.music.load('media/Undertale Asgore Theme.wav')
 pygame.mixer.music.play(-1)
 
@@ -62,12 +66,27 @@ while show_title_screen:
             show_title_screen = False
 
     title_text = title_font.render("Invaders from Deep Below!", False, WHITE)
-    title_press_start_text = title_press_start_font.render('PRESS TO START', False, GREEN)
+    title_press_start_text = title_press_start_font.render('PRESS ANY KEY TO START', False, GREEN)
 
-    game_display.blit(title_text, (30, 50))
-    game_display.blit(title_press_start_text, (120, 100))
+    game_display.blit(title_text, (310, 50))
+    game_display.blit(title_press_start_text, (360, 100))
     pygame.display.flip()
     clock.tick(30)
+
+show_outra_screen = False
+while show_title_screen:
+    for event in pygame.event.get():
+        if score >= 900 or hero.is_alive == False:
+            show_outro_screen = True
+
+    title_text = title_font.render("Game Over.", False, WHITE)
+    title_press_start_text = title_press_start_font.render('your final score was:', False, GREEN)
+
+    game_display.blit(title_text, (310, 50))
+    game_display.blit(title_press_start_text, (360, 100))
+    pygame.display.flip()
+    clock.tick(30)
+    pygame.quit()
 
 def handle_events():
         for event in pygame.event.get():
@@ -83,7 +102,7 @@ def handle_events():
                     hero.shoot(bullet_image)
                 elif event.key == pygame.K_q:
                     laser_sound.play()
-                    fleet.enemyshoot(enemybullet_image)
+                    shooterfleet.enemyshoot(enemybullet_image)
                 elif event.key == pygame.K_p:
                     pause_game()
                 
@@ -113,27 +132,34 @@ def game_intro():
     while intro:
         for event in pygame.event.get():
             for enemy in self.fleet:
-                if random.randrange(200) == 0:
-                    fleet.enemyshoot
-                    bullet.center_x = enemy.center_x
-                    bullet.angle = -90
-                    bullet.top = enemy.bottom
-                    bullet.change_y = -2
-                    self.bullet_list.append(bullet)
-            if event.type == pygame.QUIT:
-                hero.is_alive = False
-                game_intro = False
-            if event.type == pygame.KEYDOWN:
-                game_intro = False
-                pygame.quit()
-                quit()
+                if event.type == pygame.QUIT:
+                    hero.is_alive = False
+                    game_intro = False
+                if event.type == pygame.KEYDOWN:
+                    game_intro = False
+                    pygame.quit()
+                    quit()
+
+shooterfleet = ShooterFleet(3, 5, 10, enemy_image, GAME_LEFT_WALL +1, GAME_TOP_WALL + 1)
+def game_intro():
+    intro = True
+    while intro:
+        for event in pygame.event.get():
+            for enemy in self.fleet:
+                if event.type == pygame.QUIT:
+                    hero.is_alive = False
+                    game_intro = False
+                if event.type == pygame.KEYDOWN:
+                    game_intro = False
+                    pygame.quit()
+                    quit()
 
 bossfleet = BossFleet(boss_image, 440, 120)
 def game_intro():
     intro = True
     while intro:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if  event.type == pygame.QUIT:
                 hero.is_alive = False
                 game_intro = False
             if event.type == pygame.KEYDOWN:
@@ -165,7 +191,7 @@ def game_intro():
                 game_intro = False
                 pygame.quit()
                 quit()
-limbfleet3 = LimbFleet(limb_image, 650, 250)
+limbfleet3 = LimbFleet(limb_image, 600, 150)
 def game_intro():
     intro = True
     while intro:
@@ -177,9 +203,21 @@ def game_intro():
                 game_intro = False
                 pygame.quit()
                 quit()
-limbfleet4 = LimbFleet(limb_image, 850, 150)
+limbfleet4 = LimbFleet(limb_image, 700, 100)
 def game_intro():
     intro = True
+    while intro:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                hero.is_alive = False
+                game_intro = False
+            if event.type == pygame.KEYDOWN:
+                game_intro = False
+                pygame.quit()
+                quit()
+
+def game_outro():
+    outro = True
     while intro:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -213,63 +251,63 @@ while hero.is_alive:
     for bullet in hero.bullets_fired:
         for ship in bossfleet.ships:
             if bullet.has_collided_with(ship) and score >= 400 and limbfleet1.health <= 0 and limbfleet2.health <= 0 and limbfleet3.health <= 0 and limbfleet4.health <= 0:
-                explosion_sound.play()
                 bullet.is_alive = False
                 
                 score += 5
                 bossfleet.health -= 5
                 if bossfleet.health <= 0:
+                    monster_dies.play()
                     ship.is_alive = False
 
     for bullet in hero.bullets_fired:
         for ship in limbfleet1.ships:
             if bullet.has_collided_with(ship) and score >= 400:
-                explosion_sound.play()
                 bullet.is_alive = False
                 
                 score += 5
                 limbfleet1.health -= 5
                 if limbfleet1.health <= 0:
+                    monster_dies.play()
                     ship.is_alive = False
 
     for bullet in hero.bullets_fired:
         for ship in limbfleet2.ships:
             if bullet.has_collided_with(ship) and score >= 400:
-                explosion_sound.play()
                 bullet.is_alive = False
                 
                 score += 5
                 limbfleet2.health -= 5
                 if limbfleet2.health <= 0:
+                    monster_dies.play()
                     ship.is_alive = False
     
     for bullet in hero.bullets_fired:
         for ship in limbfleet3.ships:
             if bullet.has_collided_with(ship) and score >= 400:
-                explosion_sound.play()
                 bullet.is_alive = False
                 
                 score += 5
                 limbfleet3.health -= 5
                 if limbfleet3.health <= 0:
+                    monster_dies.play()
                     ship.is_alive = False
 
     for bullet in hero.bullets_fired:
         for ship in limbfleet4.ships:
             if bullet.has_collided_with(ship) and score >= 400:
-                explosion_sound.play()
                 bullet.is_alive = False
                 
                 score += 5
                 limbfleet4.health -= 5
                 if limbfleet4.health <= 0:
+                    monster_dies.play()
                     ship.is_alive = False
                 
     
     score_text = score_font.render(str(score), False, BLACK)
     game_display.blit(score_text, (0,0) )
 
-    for enemybullet in fleet.enemybullets_fired:
+    for enemybullet in shooterfleet.enemybullets_fired:
         if enemybullet.has_collided_with(hero):
             hero.is_alive = False
     
@@ -287,13 +325,13 @@ while hero.is_alive:
     hero.move(GAME_LEFT_WALL, GAME_RIGHT_WALL)
     fleet.move_over()
     hero.move_all_bullets()
-    fleet.move_all_enemybullets()
+    shooterfleet.move_all_enemybullets()
 
 
     hero.show(game_display)
     fleet.show(game_display)
     hero.show_all_bullets(game_display)
-    fleet.show_all_enemybullets(game_display)
+    shooterfleet.show_all_enemybullets(game_display)
     if score >= 400:
         bossfleet.show(game_display)
         limbfleet1.show(game_display)
